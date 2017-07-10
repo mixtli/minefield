@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "minefield"
+
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: minefield [options]"
+
+  opts.on("-f", "--file FILE", "Input filename") do |f|
+    options[:file] = f
+  end
+  opts.on("-o", "--outfile OUTFILE", "Output filename") do |f|
+    options[:outfile] = f
+  end
+end.parse!
+
+infile =  options[:file] ?  File.open(options[:file], "r") : STDIN
+outfile =  options[:outfile] ?  File.open(options[:outfile], "w") : STDOUT
+
+input = infile.readlines
+
+field = input.map {|line| line.split(/\s+/).map(&:to_i) }
+
+output = Minefield.explode_all(field)
+
+output.each do |out|
+  outfile.write  "#{out[0]} #{out[1]}\n"
+end

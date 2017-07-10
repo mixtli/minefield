@@ -4,6 +4,7 @@ require 'ostruct'
 Struct.new("Mine", :x, :y, :r)
 
 class Minefield
+  attr_reader :mines
   def initialize(mines)
     @mines = mines.map {|m| 
       Struct::Mine.new(m[0], m[1], m[2])
